@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -69,9 +70,12 @@ class UserController extends Controller
      */
     public function show($uuid)
     {
-        $user = User::where('uuid',$uuid)->first();
-        if ($user){
-            return response()->json($user,200);
+        $user_data = User::with('wallet')->where('uuid',$uuid)->first();
+
+        if ($user_data){
+            return response()->json([
+                'user_data' => $user_data
+            ],200);
 
         }else{
             return response()->json(['message'=>'user not found'],404);
