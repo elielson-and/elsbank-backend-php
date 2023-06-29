@@ -52,7 +52,16 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
-        return response()->json($user,201);
+
+        $wallet = $user->wallet()->create([
+            'uuid' => Str::uuid(),
+            'user_id' => $user->id
+        ]);
+
+        return response()->json([
+            'user_data' => $user,
+            'message'=>'User has been registered with a wallet.'
+        ],201);
     }
 
     /**
