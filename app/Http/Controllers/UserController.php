@@ -58,10 +58,7 @@ class UserController extends Controller
             'user_id' => $user->id
         ]);
 
-        return response()->json([
-            'user_data' => $user,
-            'message'=>'User has been registered with a wallet.'
-        ],201);
+        return response()->json( $user,201);
     }
 
     /**
@@ -70,9 +67,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($uuid)
     {
-        //
+        $user = User::where('uuid',$uuid)->first();
+        if ($user){
+            return response()->json($user,200);
+
+        }else{
+            return response()->json(['message'=>'user not found'],404);
+        }
     }
 
     /**

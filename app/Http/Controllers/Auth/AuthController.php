@@ -10,12 +10,12 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($request->only($request->email,$request->password)))
+        if (Auth::attempt($data))
         {
             $user = Auth::user();
             $token = $user->createToken('JWT')->plainTextToken;
@@ -25,9 +25,8 @@ class AuthController extends Controller
                 'token_type' => 'Bearer',
             ],200);
 
-            return response()->json(['message' => 'Invalid credentials or this user does not exists'], 401);
-
         }
+        return response()->json(['message' => 'Invalid credentials or this user does not exists'], 401);
     }
 
     public function logout(Request $request)
