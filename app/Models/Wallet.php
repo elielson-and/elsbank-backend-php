@@ -9,6 +9,7 @@ class Wallet extends Model
 {
     use HasFactory;
     protected $fillable = ['uuid','balance','user_id'];
+    protected $hidden = ['id','user_id'];
     // -- Relations
     public function user()
     {
