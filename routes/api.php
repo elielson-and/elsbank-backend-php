@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TransactionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,5 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)->group(function (){
         Route::get('/user/{uuid}','show');
         Route::get('/user/payee/{uuid}','show_payee');
+    });
+    Route::controller(TransactionController::class)->group(function (){
+        Route::post('/transaction/transfer','transfer');
     });
 });
