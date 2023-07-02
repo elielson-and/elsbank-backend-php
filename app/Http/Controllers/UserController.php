@@ -92,6 +92,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function show_payee($uuid)
+    {
+        $payee = User::where('uuid',$uuid)->first();
+
+        if ($payee){
+            $email = preg_replace('/(?<=.{3}).(?=.*@)/', '*', $payee->email);
+            return response()->json([
+                'name' => strtoupper($payee->first_name.' '.$payee->last_name),
+                'email' => $email
+            ],200);
+        }else{
+            return response()->json(['message'=>'payee not found'],404);
+        }
+    }
 
     /**
      * Show the form for editing the specified resource.

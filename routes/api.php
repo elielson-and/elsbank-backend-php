@@ -24,5 +24,6 @@ Route::post('/user/login',[AuthController::class,'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)->group(function (){
         Route::get('/user/{uuid}','show');
+        Route::get('/user/payee/{uuid}','show_payee');
     });
 });
