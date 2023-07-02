@@ -7,6 +7,7 @@ use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -71,6 +72,9 @@ class UserController extends Controller
     public function show($uuid)
     {
         $user_data = User::with('wallet')->where('uuid',$uuid)->first();
+        if($user_data->uuid !== Auth::user()->uuid){
+            return response()->json(['message'=>'Permission to see other user data denied'],401);
+        }
 
         if ($user_data){
             return response()->json([
@@ -81,6 +85,13 @@ class UserController extends Controller
             return response()->json(['message'=>'user not found'],404);
         }
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
 
     /**
      * Show the form for editing the specified resource.
