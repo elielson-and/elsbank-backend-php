@@ -33,8 +33,5 @@ class TransactionController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['message' => 'please try again later.'],500);
         }
-
-
-
     }
 }
