@@ -17,7 +17,11 @@ class UserController extends Controller
         'email' => 'required|email|max:255',
         'password' => 'required|string|max:255'
     ];
-
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+        return response()->json( $user,200);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -51,35 +55,12 @@ class UserController extends Controller
      */
     public function show($uuid)
     {
-        $user_data = User::with('wallet')->where('uuid',$uuid)->first();
-        if($user_data->uuid !== Auth::user()->uuid){
-            return response()->json(['message'=>'Permission to see other user data denied'],401);
-        }
+        $user = User::where('uuid',$uuid)->first();
 
-        if ($user_data){
+        if ($user){
+            $email = preg_replace('/(?<=.{3}).(?=.*@)/', '*', $user->email);
             return response()->json([
-                'user_data' => $user_data
-            ],200);
-
-        }else{
-            return response()->json(['message'=>'user not found'],404);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show_payee($uuid)
-    {
-        $payee = User::where('uuid',$uuid)->first();
-
-        if ($payee){
-            $email = preg_replace('/(?<=.{3}).(?=.*@)/', '*', $payee->email);
-            return response()->json([
-                'name' => strtoupper($payee->first_name.' '.$payee->last_name),
+                'name' => strtoupper($user->first_name.' '.$user->last_name),
                 'email' => $email
             ],200);
         }else{
