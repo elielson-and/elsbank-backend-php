@@ -19,8 +19,8 @@ class UserController extends Controller
     ];
     public function index(Request $request)
     {
-        $user = Auth::user();
-        return response()->json( $user,200);
+        $user = User::with('wallet')->find(Auth::id());
+        return response()->json($user, 200);
     }
     /**
      * Store a newly created resource in storage.
