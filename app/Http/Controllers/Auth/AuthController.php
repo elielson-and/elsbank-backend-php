@@ -20,12 +20,12 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('JWT')->plainTextToken;
 
-            return response()->json([
+            return response()->json(['authenticated_user' =>[
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'email' => $user->email,
                 'auth_token' => $token
-            ],200);
+            ]],200);
 
         }
         return response()->json(['message' => 'Invalid credentials or this user does not exists'], 401);
